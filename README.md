@@ -1,0 +1,1 @@
+Adaptation of [Raphael.FreeTransform](https://github.com/ElbertF/Raphael.FreeTransform) plugin to use Snap.
