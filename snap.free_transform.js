@@ -2,6 +2,9 @@
  * Licensed under the MIT license:
  * http://www.opensource.org/licenses/mit-license.php
  *
+ * Adapted from original source https://github.com/ElbertF/Raphael.FreeTransform
+ * to work with Snap.svg
+ *
  */
 (function (root, factory) {
     if ( typeof define === 'function' && define.amd ) {
@@ -276,10 +279,10 @@
                             }
 
                             // Keep handle within boundaries
-                            // if ( ft.opts.boundary ) {
-                            //     cx = Math.max(Math.min(cx, ft.opts.boundary.x + ( ft.opts.boundary.width  || getPaperSize().x )), ft.opts.boundary.x);
-                            //     cy = Math.max(Math.min(cy, ft.opts.boundary.y + ( ft.opts.boundary.height || getPaperSize().y )), ft.opts.boundary.y);
-                            // }
+                            if ( ft.opts.boundary ) {
+                                cx = Math.max(Math.min(cx, ft.opts.boundary.x + ( ft.opts.boundary.width  || getPaperSize().x )), ft.opts.boundary.x);
+                                cy = Math.max(Math.min(cy, ft.opts.boundary.y + ( ft.opts.boundary.height || getPaperSize().y )), ft.opts.boundary.y);
+                            }
 
                             var radius = Math.sqrt(Math.pow(cx - ft.o.center.x - ft.o.translate.x, 2) + Math.pow(cy - ft.o.center.y - ft.o.translate.y, 2));
 
