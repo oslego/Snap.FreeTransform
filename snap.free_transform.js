@@ -183,7 +183,7 @@
                 ft.axes.map(function(axis) {
                     ft.handles[axis] = {};
                     ft.handles[axis].line = paper
-                        .path([ 'M', ft.attrs.center.x, ft.attrs.center.y ].join(' '))
+                        .path([[ 'M', ft.attrs.center.x, ft.attrs.center.y ]])
                         .attr({
                             stroke: ft.opts.attrs.stroke,
                             'stroke-dasharray': '5, 5',
@@ -422,18 +422,19 @@
                         }
                         var _dragStart = function() {
                             var rotate = ( ( 360 - ft.attrs.rotate ) % 360 ) / 180 * Math.PI,
-                                handlePos = {};
+                                handlePos = {
+                                    x: parseInt(handle.element.attr('x'), 10),
+                                    y: parseInt(handle.element.attr('y'), 10)
+                                };
                                 
-                            handlePos.x = handle.element.attr('x');
-                            handlePos.y = handle.element.attr('y');
-                            
                             // Offset values
                             ft.o = cloneObj(ft.attrs);
+
                             ft.o.handlePos = {
                                 cx: handlePos.x + ft.opts.size[handle.isCorner ? 'bboxCorners' : 'bboxSides'],
                                 cy: handlePos.y + ft.opts.size[handle.isCorner ? 'bboxCorners' : 'bboxSides']
                             };
-                            
+
                             // Pre-compute rotation sin & cos for efficiency
                             ft.o.rotate = {
                                 sin: Math.sin(rotate),
@@ -453,7 +454,7 @@
                             asyncCallback([ 'scale end' ]);
                         }
                         
-                        handle.element.drag(_dragEnd, _dragStart, _dragEnd);
+                        handle.element.drag(_dragMove, _dragStart, _dragEnd);
                     });
                 }
 
@@ -529,56 +530,54 @@
                 var rotate = ft.opts.rotate.indexOf('self') >= 0,
                     scale  = ft.opts.scale .indexOf('self') >= 0;
                 
-                // No self scale or drag used ignore
-                // -----------------------------------------
-                // if ( rotate || scale ) {
-                //     subject.drag(function(dx, dy, x, y) {
-                //         if ( rotate ) {
-                //             var rad = Math.atan2(y - ft.o.center.y - ft.o.translate.y, x - ft.o.center.x - ft.o.translate.x);
-                // 
-                //             ft.attrs.rotate = ft.o.rotate + ( rad * 180 / Math.PI ) - ft.o.deg;
-                //         }
-                // 
-                //         var mirrored = {
-                //             x: ft.o.scale.x < 0,
-                //             y: ft.o.scale.y < 0
-                //         };
-                // 
-                //         if ( scale ) {
-                //             var radius = Math.sqrt(Math.pow(x - ft.o.center.x - ft.o.translate.x, 2) + Math.pow(y - ft.o.center.y - ft.o.translate.y, 2));
-                // 
-                //             ft.attrs.scale.x = ft.attrs.scale.y = ( mirrored.x ? -1 : 1 ) * ft.o.scale.x + ( radius - ft.o.radius ) / ( ft.o.size.x / 2 );
-                // 
-                //             if ( mirrored.x ) { ft.attrs.scale.x *= -1; }
-                //             if ( mirrored.y ) { ft.attrs.scale.y *= -1; }
-                //         }
-                // 
-                //         applyLimits();
-                // 
-                //         ft.apply();
-                // 
-                //         asyncCallback([ rotate ? 'rotate' : null, scale ? 'scale' : null ]);
-                //     }, function(x, y) {
-                //         // Offset values
-                //         ft.o = cloneObj(ft.attrs);
-                // 
-                //         ft.o.deg = Math.atan2(y - ft.o.center.y - ft.o.translate.y, x - ft.o.center.x - ft.o.translate.x) * 180 / Math.PI;
-                // 
-                //         ft.o.radius = Math.sqrt(Math.pow(x - ft.o.center.x - ft.o.translate.x, 2) + Math.pow(y - ft.o.center.y - ft.o.translate.y, 2));
-                // 
-                //         // viewBox might be scaled
-                //         if ( paper._viewBox ) {
-                //             ft.o.viewBoxRatio = {
-                //                 x: paper._viewBox[2] / getPaperSize().x,
-                //                 y: paper._viewBox[3] / getPaperSize().y
-                //             };
-                //         }
-                // 
-                //         asyncCallback([ rotate ? 'rotate start' : null, scale ? 'scale start' : null ]);
-                //     }, function() {
-                //         asyncCallback([ rotate ? 'rotate end'   : null, scale ? 'scale end'   : null ]);
-                //     });
-                // }
+                if ( rotate || scale ) {
+                    subject.drag(function(dx, dy, x, y) {
+                        if ( rotate ) {
+                            var rad = Math.atan2(y - ft.o.center.y - ft.o.translate.y, x - ft.o.center.x - ft.o.translate.x);
+                
+                            ft.attrs.rotate = ft.o.rotate + ( rad * 180 / Math.PI ) - ft.o.deg;
+                        }
+                
+                        var mirrored = {
+                            x: ft.o.scale.x < 0,
+                            y: ft.o.scale.y < 0
+                        };
+                
+                        if ( scale ) {
+                            var radius = Math.sqrt(Math.pow(x - ft.o.center.x - ft.o.translate.x, 2) + Math.pow(y - ft.o.center.y - ft.o.translate.y, 2));
+                
+                            ft.attrs.scale.x = ft.attrs.scale.y = ( mirrored.x ? -1 : 1 ) * ft.o.scale.x + ( radius - ft.o.radius ) / ( ft.o.size.x / 2 );
+                
+                            if ( mirrored.x ) { ft.attrs.scale.x *= -1; }
+                            if ( mirrored.y ) { ft.attrs.scale.y *= -1; }
+                        }
+                
+                        applyLimits();
+                
+                        ft.apply();
+                
+                        asyncCallback([ rotate ? 'rotate' : null, scale ? 'scale' : null ]);
+                    }, function(x, y) {
+                        // Offset values
+                        ft.o = cloneObj(ft.attrs);
+                
+                        ft.o.deg = Math.atan2(y - ft.o.center.y - ft.o.translate.y, x - ft.o.center.x - ft.o.translate.x) * 180 / Math.PI;
+                
+                        ft.o.radius = Math.sqrt(Math.pow(x - ft.o.center.x - ft.o.translate.x, 2) + Math.pow(y - ft.o.center.y - ft.o.translate.y, 2));
+                
+                        // viewBox might be scaled
+                        if ( paper._viewBox ) {
+                            ft.o.viewBoxRatio = {
+                                x: paper._viewBox[2] / getPaperSize().x,
+                                y: paper._viewBox[3] / getPaperSize().y
+                            };
+                        }
+                
+                        asyncCallback([ rotate ? 'rotate start' : null, scale ? 'scale start' : null ]);
+                    }, function() {
+                        asyncCallback([ rotate ? 'rotate end'   : null, scale ? 'scale end'   : null ]);
+                    });
+                }
 
                 ft.updateHandles();
 
