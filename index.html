@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+  
+  body, html{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+  }         
+  
+  svg{
+    background: gray;
+  }
+  
+  </style>
+</head>
+<body>
+  
+  <div id="holder"></div>
+  
+  <script src="snap.js"></script>
+  <script src="snap.toFront.js"></script>
+  <script src="snap.free_transform.js"></script>
+  <script>
+  
+  
+  var snap = Snap('100%','100%')
+  var rect = snap.paper.rect(50,50, 300, 150)
+
+  // function cb(){
+  //   console.log(this)
+  // }
+  // 
+  // Snap.freeTransform(rect, {
+  //   draw: ['bbox'],
+  //   keepRatio: ['bboxCorners'],
+  //   rotate: ['axisX'],
+  //   scale: ['bboxCorners', 'bboxSides'],
+  //   distance: '0.8'
+  // }, cb);
+  
+  </script>
+</body>
+</html>
