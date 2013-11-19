@@ -1,9 +1,12 @@
 Snap.plugin(function (Snap, Element, Paper, glob) {
     var elproto = Element.prototype;
     elproto.toFront = function () {
-        this.prependTo(this.paper);
+        this.appendTo(this.paper);
+        return this
+
     };
     elproto.toBack = function () {
-        this.appendTo(this.paper);
+        this.prependTo(this.paper);
+        return this
     };
 })

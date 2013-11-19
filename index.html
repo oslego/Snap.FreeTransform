@@ -29,18 +29,21 @@
   
   var snap = Snap('100%','100%')
   var rect = snap.paper.rect(50,50, 300, 150)
+  var circle = snap.circle(30,30,130).attr('fill','red')
 
-  // function cb(){
-  //   console.log(this)
-  // }
-  // 
-  // Snap.freeTransform(rect, {
-  //   draw: ['bbox'],
-  //   keepRatio: ['bboxCorners'],
-  //   rotate: ['axisX'],
-  //   scale: ['bboxCorners', 'bboxSides'],
-  //   distance: '0.8'
-  // }, cb);
+  function cb(){
+    // console.log(this)
+  }
+  
+  console.log(snap)
+  
+  Snap.freeTransform(circle, {
+    draw: ['bbox'],
+    keepRatio: ['bboxCorners'],
+    rotate: ['axisX'],
+    scale: ['bboxCorners', 'bboxSides'],
+    distance: '0.8'
+  }, cb);
   
   </script>
 </body>
