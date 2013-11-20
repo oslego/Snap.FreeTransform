@@ -14,7 +14,6 @@
             return factory(Snap || root.Snap);
         });
     } else {
-        // RequireJS isn't being used. Assume underscore and backbone are loaded in <script> tags
         factory(Snap);
     }
 }(this, function(Snap) {
