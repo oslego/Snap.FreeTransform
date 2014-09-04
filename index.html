@@ -4,36 +4,34 @@
   <meta charset="UTF-8">
   <title>Document</title>
   <style>
-  
+
   body, html{
     width: 100%;
     height: 100%;
     margin: 0;
-  }         
-  
+  }
+
   svg{
     background: gray;
   }
-  
+
   </style>
 </head>
 <body>
-  
+
   <div id="holder"></div>
-  
-  <script src="snap.js"></script>
-  <script src="snap.toFront.js"></script>
-  <script src="snap.free_transform.js"></script>
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/snap.svg/0.3.0/snap.svg-min.js"></script>
+  <script src="snap.freetransform.js"></script>
   <script>
-  
-  
+
   var snap = Snap('100%','100%')
   var rect = snap.paper.rect(100,100, 400, 200).attr('fill','green')
-                                         
+
   function cb(){
-    // console.log(this)
+    // console.log(this);
   }
-  
+
   Snap.freeTransform(rect, {
     draw: ['bbox'],
     drag: ['center'],
@@ -42,7 +40,7 @@
     scale: ['bboxCorners', 'bboxSides'],
     distance: '0.6'
   }, cb);
-  
+
   </script>
 </body>
 </html>
