@@ -944,10 +944,14 @@
                 // };
                 //
 
+                // Firefox has issues with returning the paper size of an SVG element, and will simply hand down 0.
+                // As a work around, return either the node client width or its parent, and give a reference
+                // of which was actually used.
                 return {
-                    x: parseInt(paper.node.clientWidth),
-                    y: parseInt(paper.node.clientHeight)
-                }
+                    x: paper.node.clientWidth || paper.node.parentElement.clientWidth,
+                    y: paper.node.clientHeight || paper.node.parentElement.clientHeight,
+                    from: (paper.node.clientWidth) ? 'self' : 'parent'
+                };
             }
 
             /**
