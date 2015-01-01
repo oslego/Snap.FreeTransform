@@ -1,10 +1,11 @@
 {
   "name": "snap.freetransform.natecox",
   "main": "snap.freetransform.js",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "homepage": "https://github.com/natecox/Snap.FreeTransform",
   "authors": [
-    "Nathan Cox <akujin@akujin.com>"
+    "Nathan Cox <akujin@akujin.com>",
+    "Justin Schiff <ambientrevolution@gmail.com>"
   ],
   "description": "Snap.Freetransform pull request holding place.",
   "keywords": [
