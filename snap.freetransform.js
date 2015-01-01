@@ -39,7 +39,8 @@
             if ( subject.freeTransform ) { return subject.freeTransform; }
 
             var paper = subject.paper,
-                bbox  = subject.getBBox(true);
+                bbox  = subject.getBBox(true),
+                vb    = subject.paper.node.viewBox.baseVal;
 
             var ft = subject.freeTransform = {
                 // Keep track of transformations
@@ -69,7 +70,9 @@
                     bboxAttrs: { fill: 'none', stroke: '#000', 'stroke-dasharray': '4, 4', opacity: 0.5},
                     axesAttrs: { fill: '#fff', stroke: '#000', 'stroke-dasharray': '4, 4', opacity: 0.5},
                     discAttrs: { fill: '#fff', stroke: '#000' },
-                    boundary: { x: paper._left || 0, y: paper._top || 0, width: null, height: null },
+                    boundary: { x: paper._left || 0, y: paper._top || 0,
+                                width: vb.width || getPaperSize().x,
+                                height: vb.height || getPaperSize().y },
                     distance: 1.3,
                     drag: true,
                     draw: false,
