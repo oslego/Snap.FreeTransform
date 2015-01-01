@@ -39,7 +39,8 @@
             if ( subject.freeTransform ) { return subject.freeTransform; }
 
             var paper = subject.paper,
-                bbox  = subject.getBBox(true);
+                bbox  = subject.getBBox(true),
+                vb    = subject.paper.node.viewBox.baseVal;
 
             var ft = subject.freeTransform = {
                 // Keep track of transformations
@@ -69,7 +70,9 @@
                     bboxAttrs: { fill: 'none', stroke: '#000', 'stroke-dasharray': '4, 4', opacity: 0.5},
                     axesAttrs: { fill: '#fff', stroke: '#000', 'stroke-dasharray': '4, 4', opacity: 0.5},
                     discAttrs: { fill: '#fff', stroke: '#000' },
-                    boundary: { x: paper._left || 0, y: paper._top || 0, width: null, height: null },
+                    boundary: { x: paper._left || 0, y: paper._top || 0,
+                                width: vb.width || getPaperSize().x,
+                                height: vb.height || getPaperSize().y },
                     distance: 1.3,
                     drag: true,
                     draw: false,
@@ -944,10 +947,14 @@
                 // };
                 //
 
+                // Firefox has issues with returning the paper size of an SVG element, and will simply hand down 0.
+                // As a work around, return either the node client width or its parent, and give a reference
+                // of which was actually used.
                 return {
-                    x: parseInt(paper.node.clientWidth),
-                    y: parseInt(paper.node.clientHeight)
-                }
+                    x: paper.node.clientWidth || paper.node.parentElement.clientWidth,
+                    y: paper.node.clientHeight || paper.node.parentElement.clientHeight,
+                    from: (paper.node.clientWidth) ? 'self' : 'parent'
+                };
             }
 
             /**
